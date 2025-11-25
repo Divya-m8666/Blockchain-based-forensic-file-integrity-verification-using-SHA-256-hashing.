@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyberVault – File Hash DApp</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Orbitron", sans-serif;
+      background: radial-gradient(circle at top, #122016 0, #050807 45%, #020403 100%);
+      color: #aaffd2; /* light mint text */
+    }
+
+    .shell {
+      width: 1000px;
+      padding: 40px;
+      background: rgba(4, 8, 5, 0.95);
+      border-radius: 24px;
+      border: 2px solid #aaffd2; /* mint border */
+      box-shadow: 0 0 30px rgba(170, 255, 210, 0.55); /* mint glow */
+      display: flex;
+      gap: 24px;
+      animation: glowPulse 2s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 16px rgba(170,255,210,0.3); }
+      to   { box-shadow: 0 0 32px rgba(170,255,210,0.8); }
+    }
+
+    .left, .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      text-shadow: 0 0 12px #aaffd2;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #aaffd2;
+      box-shadow: 0 0 10px #aaffd2;
+    }
+
+    #networkStatus {
+      font-weight: 600;
+    }
+
+    #statusBox {
+      margin-top: 14px;
+      padding: 10px 12px;
+      min-height: 46px;
+      border-radius: 10px;
+      border-left: 4px solid #aaffd2;
+      background: rgba(170, 255, 210, 0.08);
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    h2 {
+      margin: 22px 0 8px;
+      font-size: 18px;
+      text-shadow: 0 0 8px #aaffd2;
+    }
+
+    input[type="file"] {
+      margin-top: 6px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #aaffd2;
+    }
+
+    /* 🌿 Dark mint buttons with mint glow (D2) */
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #e9fff6;
+      background: #3c5f52; /* dark mint */
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(170, 255, 210, 0.7); /* mint glow */
+      transition: transform 0.15s ease,
+                  box-shadow 0.15s ease,
+                  background 0.15s ease;
+    }
+
+    button:hover {
+      background: #4f7c68; /* lighter minty */
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(170, 255, 210, 1);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .right-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    #fileList {
+      flex: 1;
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(170,255,210,0.5);
+      background: rgba(0, 0, 0, 0.45);
+      font-size: 12px;
+      overflow-y: auto;
+      max-height: 280px;
+    }
+
+    .file-item {
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(170,255,210,0.25);
+    }
+
+    .file-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .file-meta {
+      opacity: 0.85;
+      margin-top: 2px;
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+
+    .hash {
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    <div class="left">
+      <h1>🟢 CyberVault – File Hash DApp</h1>
+      <div class="subtitle">Secure forensic file integrity using SHA-256 blockchain hashing.</div>
+
+      <div class="status-row">
+        <div class="dot"></div>
+        <div>Status: <span id="networkStatus">Wallet not connected</span></div>
+      </div>
+
+      <div id="statusBox">Click "Connect Wallet" to begin.</div>
+
+      <h2>Choose File</h2>
+      <input type="file" id="fileInput" />
+
+      <button id="connectBtn">🧿 Connect Wallet</button>
+      <button id="uploadBtn" disabled>💾 Store File Hash</button>
+    </div>
+
+    <div class="right">
+      <div class="right-header">
+        <h2>📁 Stored File Hashes</h2>
+        <button id="refreshBtn" style="width:auto;min-width:140px;">📡 Refresh</button>
+      </div>
+
+      <div id="fileList">No records loaded. Click "Refresh".</div>
+    </div>
+  </div>
+
+  <!-- Ethers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <script>
+    const CONTRACT_ADDRESS = "0x0bAdDf3daea0016ab9B529926DEDbB7F478dF464";
+
+    const CONTRACT_ABI = [
+      "function storeFile(string _fileName, string _fileHash) public",
+      "function getFiles() public view returns (tuple(string fileName,string fileHash,uint256 timestamp,address uploader)[])"
+    ];
+
+    const statusBox = document.getElementById("statusBox");
+    const networkSpan = document.getElementById("networkStatus");
+    const fileInput = document.getElementById("fileInput");
+    const fileListDiv = document.getElementById("fileList");
+
+    let provider, signer, contract;
+
+    function setStatus(msg) { statusBox.innerText = msg; }
+
+    async function connectWallet() {
+      if (!window.ethereum) {
+        networkSpan.innerText = "❌ MetaMask Not Detected";
+        setStatus("Install MetaMask to continue.");
+        return;
+      }
+
+      try {
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+        const addr = accounts[0];
+        networkSpan.innerText = "Connected: " + addr.slice(0,6) + "..." + addr.slice(-4);
+
+        setStatus("Wallet connected.");
+        uploadBtn.disabled = false;
+      } catch (err) {
+        console.error(err);
+        setStatus("Connection failed.");
+      }
+    }
+
+    async function sha256File(file) {
+      const buffer = await file.arrayBuffer();
+      const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+      return [...new Uint8Array(hashBuffer)]
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    async function uploadHash() {
+      if (!contract) return setStatus("Connect wallet first.");
+
+      const file = fileInput.files[0];
+      if (!file) return alert("Select a file!");
+
+      try {
+        setStatus("⏳ Hashing file...");
+        const hash = await sha256File(file);
+
+        setStatus("Hash generated.\nSending transaction...");
+        const tx = await contract.storeFile(file.name, hash);
+        await tx.wait();
+
+        setStatus("✅ File hash stored!");
+        await loadFiles();
+      } catch (err) {
+        console.error(err);
+        setStatus("❌ Error: " + err.message);
+      }
+    }
+
+    async function loadFiles() {
+      if (!contract) return;
+
+      setStatus("⏳ Loading records...");
+
+      try {
+        const files = await contract.getFiles();
+
+        if (files.length === 0) {
+          fileListDiv.innerHTML = "No hashes stored yet.";
+          return;
+        }
+
+        let html = "";
+        files.forEach((f, i) => {
+          const date = new Date(Number(f.timestamp) * 1000).toLocaleString();
+
+          html += `
+            <div class="file-item">
+              <div class="file-title">${i+1}. ${f.fileName}</div>
+              <div class="file-meta">
+                Time: ${date}<br>
+                Uploader: ${f.uploader.slice(0,6)}...${f.uploader.slice(-4)}<br>
+                Hash:<br>
+                <span class="hash">${f.fileHash}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        fileListDiv.innerHTML = html;
+        setStatus("✅ Loaded successfully.");
+      } catch (err) {
+        console.error(err);
+        setStatus("❌ Could not load data.\n" + err.message);
+      }
+    }
+
+    connectBtn.onclick = connectWallet;
+    uploadBtn.onclick = uploadHash;
+    refreshBtn.onclick = loadFiles;
+
+    window.onload = () => {
+      if (!window.ethereum) {
+        networkSpan.innerText = "❌ MetaMask not installed";
+        setStatus("Install MetaMask to use the DApp.");
+      } else {
+        networkSpan.innerText = "Wallet detected – not connected";
+        setStatus("Click \"Connect Wallet\" to continue.");
+      }
+    };
+  </script>
+</body>
+</html>
