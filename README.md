@@ -66,14 +66,13 @@ npx hardhat compile
 In hardhat.config.js:
 
 networks: {
-  sepolia: {
-    url: "https://sepolia.infura.io/v3/YOUR_INFURA_API_KEY",
+  etherium hoodi: {
     accounts: ["YOUR_PRIVATE_KEY"]
   }
 }
 
 4️⃣ Deploy the Contract
-npx hardhat run scripts/deploy.js --network sepolia
+npx hardhat run scripts/deploy.js --network etherum hoodi
 
 5️⃣ Copy Deployment Output
 
@@ -100,6 +99,6 @@ http://localhost:3000/
 
 5️⃣ Connect MetaMask
 
-Select Sepolia Test Network
+Select ethererium hoodi Test Network
 
 Click Connect Wallet
