@@ -1,179 +1,105 @@
-CyberVault – File Hash DApp (Detailed Explanation)
+📌 Project Description
 
-CyberVault is a decentralized file-integrity verification system built on blockchain technology. It combines SHA-256 hashing, smart contracts, and MetaMask wallet integration to create a secure, tamper-proof method for validating digital files.
+CyberVault – File Hash DApp is a decentralized blockchain application designed to ensure the integrity, authenticity, and immutability of digital files.
+The DApp allows users to upload any file, generate its SHA-256 hash inside the browser, and securely store this hash on the Ethereum blockchain through a smart contract.
 
-Below is a detailed breakdown of each component and why this DApp is useful in real-world applications.
+CyberVault helps prove whether a digital file has been modified by providing an immutable, timestamped hash record on-chain.
+This makes it ideal for digital forensics, legal evidence, academic validation, and secure document notarization.
 
-🔐 What CyberVault Does (Detailed Functional Breakdown)
-1️⃣ Connects with MetaMask (or any EVM-compatible wallet)
+⭐ Features
+🔐 Secure File Hashing
 
-CyberVault integrates with MetaMask so the user can:
+Generates SHA-256 hash locally (file never leaves the device)
 
-Authenticate themselves using their blockchain wallet
+Ensures privacy and zero data leakage
 
-Send transactions securely
+🔗 Blockchain Storage
 
-Sign and verify actions
+Hashes stored immutably on Ethereum test network
 
-Interact with smart contracts on the Ethereum test network
+Each entry linked to a wallet address + timestamp
 
-This ensures every stored file hash is linked to a real wallet address, enabling traceability and accountability.
+👛 MetaMask Integration
 
-2️⃣ Takes any file from the user
+Connect wallet
 
-Users can upload:
+Authorize transactions
 
-PDFs
+Store or fetch file hashes securely
 
-Images
+🧾 Forensic Log Viewer
 
-Documents
-
-ZIP files
-
-Audio/video
-
-Any digital artifact
-
-The DApp never uploads the file to the server or blockchain — it is processed locally for maximum privacy.
-
-3️⃣ Generates SHA-256 hash inside the browser for security
-
-Once the file is selected:
-
-The browser reads the file
-
-SHA-256 hashing algorithm generates a unique 64-character hash
-
-This hash is guaranteed to be unique for that file
-
-If even 1 byte changes in the file, the hash becomes completely different
-
-This ensures:
-
-File privacy (nothing is uploaded)
-
-Cryptographic integrity
-
-No tampering
-
-This process is essential for digital forensics and legal evidence handling.
-
-4️⃣ Stores the hash on the blockchain using a smart contract
-
-The generated hash is:
-
-Sent to the deployed smart contract
-
-Stored permanently on the blockchain
-
-Linked to the uploader’s wallet
-
-Stored with time information (block timestamp)
-
-Since blockchain data is:
-
-Immutable (cannot be altered or deleted)
-
-Distributed (stored across nodes)
-
-Transparent (verifiable by anyone)
-
-Storing file hashes becomes tamper-proof and undeniable.
-
-5️⃣ Displays all previously stored hashes
-
-The DApp fetches data from the smart contract and shows:
+Shows:
 
 File name
 
-SHA-256 hash
+Hash
 
-Date and time of upload
+Upload time
 
-Uploader wallet address
+Wallet address
 
-This acts like a forensic audit log on the blockchain.
+Acts as a tamper-proof audit trail
 
-📌 Why This DApp is Useful (Practical Applications in Detail)
-1️⃣ Digital Forensics
+🎨 Futuristic Cyber UI
 
-Investigators can hash evidence files and store them on-chain.
-This ensures:
+Neon glowing design
 
-Chain of custody
+Dark-mode cyber theme
 
-Proof of authenticity
+Smooth user experience
 
-Protection from tampering or alteration
+🧩 Steps to Deploy the Smart Contract
 
-Even if the file is copied, the original hash validates the source.
+Test Network Used: Sepolia Test Network
+Contract Address: 0x1234567890abcdef1234567890abcdef12345678
+(Replace with the actual address after deployment)
 
-2️⃣ Integrity Verification
+1️⃣ Install dependencies
+npm install
 
-Organizations can verify:
+2️⃣ Compile the Smart Contract
+npx hardhat compile
 
-Contracts
+3️⃣ Update Hardhat Configuration
 
-Reports
+In hardhat.config.js:
 
-Engineering drawings
+networks: {
+  sepolia: {
+    url: "https://sepolia.infura.io/v3/YOUR_INFURA_API_KEY",
+    accounts: ["YOUR_PRIVATE_KEY"]
+  }
+}
 
-Legal documents
-by matching their SHA-256 hash with the one stored on the blockchain.
+4️⃣ Deploy the Contract
+npx hardhat run scripts/deploy.js --network sepolia
 
-Any modification → new hash → integrity violation detected.
+5️⃣ Copy Deployment Output
 
-3️⃣ Legal Evidence Preservation
+Copy:
 
-Courts require tamper-proof documentation.
-Storing document hashes on the blockchain ensures:
+Contract address
 
-No dispute about originality
+ABI
 
-Timestamped evidence
+Paste into your frontend app.js.
 
-Cryptographically verifiable authenticity
+🖥️ Steps to Run the Frontend
+1️⃣ Move into Frontend Folder
+cd frontend
 
-This supports compliance for legal and judicial workflows.
+2️⃣ Install Required Packages
+npm install
 
-4️⃣ Academic Document Validation
+3️⃣ Start the Development Server
+npm start
 
-Universities can validate:
+4️⃣ Open Browser
+http://localhost:3000/
 
-Certificates
+5️⃣ Connect MetaMask
 
-Transcripts
+Select Sepolia Test Network
 
-Research papers
-
-Thesis documents
-
-Students can share their document with employers, who can verify it by checking the hash.
-
-5️⃣ Secure File Notarization
-
-CyberVault can act as a digital notary.
-Users can notarize:
-
-Agreements
-
-Contracts
-
-Intellectual property
-
-Patents
-
-Creative works
-
-Blockchain notarization ensures:
-
-Proof of ownership
-
-Immutable timestamp
-
-Public verification without exposing the file
-
-⭐ Summary (One-Paragraph Overview)
-
-CyberVault transforms traditional file validation into a secure, blockchain-backed process. By hashing files locally and storing the hash immutably on a smart contract, it ensures that digital documents remain authentic, verifiable, and tamper-proof — making the system ideal for forensics, legal evidence, academic validation, and digital notarization.
+Click Connect Wallet
